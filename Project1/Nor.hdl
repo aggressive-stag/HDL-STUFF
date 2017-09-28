@@ -1,0 +1,18 @@
+/**
+ * Basically flip the And gate
+ * truth table.
+ * And gate: 
+ * out = 1 if (a == 1 and b == 1)
+ *       0 otherwise
+ */
+
+CHIP Nor {
+    IN a, b;
+    OUT out;
+	
+    PARTS:
+	Nand(a=a,b=a,out=NotA);
+	Nand(a=b,b=b,out=NotB);
+	Nand(a=NotA,b=NotB,out=outAorB);
+	Nand(a=outAorB,b=outAorB,out=out);
+}
