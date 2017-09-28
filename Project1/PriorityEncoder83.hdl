@@ -1,0 +1,45 @@
+//Priority Encoder
+//input is 8-bit long array
+//output is 3-bit long array
+
+CHIP PriorityEncoder83 {
+	IN a[8];
+	OUT out[3], idle;
+
+	PARTS:
+
+	//Making all the negatives
+	Not(in=a[6], out=nota6);
+	Not(in=a[5], out=nota5);
+	Not(in=a[4], out=nota4);
+	Not(in=a[2], out=nota2);
+
+	//Output 0
+	And(a=nota4, b=nota2, out=out1);
+	And(a=out1, b=a[1], out=out2);
+	And(a=nota4, b=a[3], out=out3);
+	Or(a=out2, b=out3, out=out4);
+	Or(a=out4, b=a[5], out=out5);
+	And(a=nota6, b=out5, out=out6);
+	Or(a=out6, b=a[7], out=out[0]);
+
+	//Output 1
+	And(a=nota5, b=nota4, out=out7);
+	Or(a=a[2], b=a[3], out=out8);
+	And(a=out7, b=out8, out=out9);
+	Or(a=out9, b=a[6], out=out10);
+	Or(a=out10, b=a[7], out=out[1]);
+
+	//Output 2
+	Or(a=a[4], b=a[5], out=out11);
+	Or(a=out11, b=a[6], out=out12);
+	Or(a=out12, b=a[7], out=out[2]);
+
+	//Idle
+	Or(a=out6, b=a[7], out=out13); //output0
+	Or(a=out10, b=a[7], out=out14); //output1
+	Or(a=out13, b=out14, out=out15);
+	Or(a=out12, b=a[7], out=out16); //output2
+	Or(a=out16, b=a[0], out=out17);
+	Nor(a=out15, b=out17, out= idle);
+}

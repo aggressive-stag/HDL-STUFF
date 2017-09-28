@@ -1,0 +1,12 @@
+/** A student would fail an exam if they spent the previous night studying for the exam, 
+ * or if they had not had breakfast before the exam
+ */
+
+CHIP Exercise1 {
+    IN Studied, hadBreakfast; //Studied all night, and have had breakfast 
+    OUT isFailed; //Did the student failed the exam
+
+    PARTS:
+	Not(in=Studied, out=noStudy);
+	Nand(a=hadBreakfast, b=noStudy, out=isFailed);
+}

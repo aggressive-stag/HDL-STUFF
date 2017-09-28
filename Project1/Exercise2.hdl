@@ -1,0 +1,14 @@
+/** You cannot get onto the ride if too young and too short, 
+ *  or too odd and have heart disease.
+ */
+
+CHIP Exercise2 {
+    IN tooYoung, tooShort, tooOld, haveHeartDisease;
+    OUT canGetOnRide; //can get onto the ride
+
+    PARTS:
+	And(a=tooYoung, b=tooShort, out=out1);
+	And(a=tooOld, b=haveHeartDisease, out=out2);
+	Or(a=out1, b=out2, out=out3);
+	Not(in=out3, out=canGetOnRide);
+}
