@@ -1,0 +1,12 @@
+/**
+ * Negate a 16-bit number, be aware that first bit is the sign-bit
+ */
+
+CHIP Negation {
+    IN in[16];
+    OUT out[16];
+
+    PARTS:
+	Not16(in=in, out=n);
+	Inc16(in=n, out=out);
+}

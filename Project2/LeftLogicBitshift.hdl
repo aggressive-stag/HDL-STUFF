@@ -1,0 +1,20 @@
+/**
+ * Shift x left y bits, new bits are filled in with 0, 
+ * you may not use any DFF or clocked chip in this implementation.
+ * You may assume the maximum shift is 8-bit
+ */
+
+CHIP LeftLogicBitshift {
+    IN x[16], y[16];
+    OUT out[16];
+
+    PARTS:
+	//Level 1
+	Mux16(a=x, b[0]=false, b[1..15]=x[0..14], sel=y[0], out=out1a, out[0..13]=out1b);
+	//Level 2
+	Mux16(a=out1a, b[0..1]=false, b[2..15]=out1b, sel=y[1], out=out2a, out[0..11]=out2b);
+	//Level 3
+	Mux16(a=out2a, b[0..3]=false, b[4..15]=out2b, sel=y[2], out=out3a, out[0..7]=out3b);
+	//Level 4
+	Mux16(a=out3a, b[0..7]=false, b[8..15]=out3b, sel=y[3], out=out);
+}
