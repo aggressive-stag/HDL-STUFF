@@ -1,0 +1,24 @@
+CHIP RightArithmeticBitshift {
+    IN in, load, reset;
+    OUT out[4];
+
+    PARTS:
+	Mux(a=outMSM, b=in, sel=load, out=test);
+	Mux(a=test, b=false, sel=reset, out=zero0);
+	Bit(in=zero0, load=true, out=out[3], out=outMSM);
+	Mux(a=outMSM, b=false, sel=reset, out=zero1);
+	Mux(a=zero1, b=outMSM, sel=load, out=ugh1);
+
+	Bit(in=ugh1, load=true, out=out[2], out=outMSM2);
+	Mux(a=outMSM2, b=false, sel=reset, out=zero2);
+	Mux(a=zero2, b=outMSM2, sel=load, out=ugh2);
+
+	Bit(in=ugh2, load=true, out=out[1], out=outMSM3);
+	Mux(a=outMSM3, b=false, sel=reset, out=zero3);
+	Mux(a=zero3, b=outMSM3, sel=load, out=ugh3);
+
+	Bit(in=ugh3, load=true, out=out[0]);
+
+	//Bit(in=in)
+   
+}

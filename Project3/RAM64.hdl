@@ -1,0 +1,32 @@
+/**
+ * Memory of 64 registers, each 16 bit-wide. Out holds the value
+ * stored at the memory location specified by address. If load==1, then 
+ * the in value is loaded into the memory location specified by address 
+ * (the loaded value will be emitted to out from the next time step onward).
+ */
+
+CHIP RAM64 {
+    IN in[16], load, address[6];
+    OUT out[16];
+
+    PARTS:
+    DMux4Way(in=load, sel=address[4..5], a=s000000, b=s000001, c=s000010, d=s000011);
+
+	DMux(in=s000000, sel=address[3], a=spot000, b=spot100);
+	DMux(in=s000001, sel=address[3], a=spot001, b=spot101);
+	DMux(in=s000010, sel=address[3], a=spot010, b=spot110);
+	DMux(in=s000011, sel=address[3], a=spot011, b=spot111);
+
+	RAM8(in=in, load=spot000, address=address[0..2], out=out000);
+	RAM8(in=in, load=spot100, address=address[0..2], out=out100);
+	RAM8(in=in, load=spot001, address=address[0..2], out=out001);
+	RAM8(in=in, load=spot101, address=address[0..2], out=out101);
+	RAM8(in=in, load=spot010, address=address[0..2], out=out010);
+	RAM8(in=in, load=spot110, address=address[0..2], out=out110);
+	RAM8(in=in, load=spot011, address=address[0..2], out=out011);
+	RAM8(in=in, load=spot111, address=address[0..2], out=out111);
+
+	Mux4Way16(a=out000, b=out001, c=out010, d=out011, sel=address[4..5], out=final011);
+	Mux4Way16(a=out100, b=out101, c=out110, d=out111, sel=address[4..5], out=final111);
+	Mux16(a=final011, b=final111, sel=address[3], out=out);
+}
