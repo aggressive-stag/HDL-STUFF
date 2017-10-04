@@ -1,0 +1,14 @@
+CHIP Fibonacci {
+	IN f0[16], enable1, msel, enable2, enable3, f1[16];
+	OUT out[16];
+
+	PARTS:
+	Mux16(a=f0, b=sum, sel=msel, out=out0);
+	Register(in=out0, load=enable1, out=out1); //Reg 1
+
+	Mux16(a=f1, b=out1, sel=msel, out=out2);
+	Register(in=out2, load=enable2, out=out3); //Reg 2
+
+	Add16(a=out1, b=out3, out=out4);
+	Register(in=out4, load=enable3, out=sum, out=out); //Reg 3
+}
